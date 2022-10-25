@@ -1,30 +1,34 @@
-import React from "react"
-import './App.css';
+import React, {useState} from "react"
 
 /**
- * Challenge: Using hooks, track the state of the text in the textarea on every keystroke
- * To verify it's working, you could just console.log the state on every change
+ * Challenge:
  * 
- * https://scrimba.com/p/p7P5Hd/cW8Jdfy
+ * Create a function to calculate the number of separate words in the `text` state
+ * For now, just console.log the word count when the button gets clicked to test it out.
  */
 
 function App() {
-    const [input, setInput] = React.useState("")
-    console.log(input)
+    const [text, setText] = useState("")
     
-    function handleInput(e) {
-        setInput(e.target.value)
+    function handleChange(e) {
+        const {value} = e.target
+        setText(value)
     }
-
+    
+    function calculateWordCount(text) {
+        const wordsArr = text.trim().split(" ")
+        return wordsArr.filter(word => word !== "").length
+    }
+    
     return (
         <div>
             <h1>How fast do you type?</h1>
-            <textarea 
-              value={input}
-              onChange={handleInput}
+            <textarea
+                onChange={handleChange}
+                value={text}
             />
-            <h4>Time reminaing: ???</h4>
-            <button>Start</button>
+            <h4>Time remaining: ???</h4>
+            <button onClick={() => console.log(calculateWordCount(text))}>Start</button>
             <h1>Word count: ???</h1>
         </div>
     )
