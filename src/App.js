@@ -1,43 +1,42 @@
 import React, {useState, useEffect} from "react"
-
+/* cd c:/GIT/react_advance/speed_typing_game
 /**
  * Challenge:
  * 
- * 1. Create state to hold the current value of the countdown timer.
- *    Display this time in the "Time Remaining" header
- * 
- * 2. Set up an effect that runs every time the `timeRemaining` changes
- *    The effect should wait 1 second, then decrement the `timeRemaining` by 1
- * 
- *    Hint: use `setTimeout` instead of `setInterval`. This will help you avoid
- *    a lot of extra work.
- * 
- *    Warning: there will be a bug in this, but we'll tackle that next
- * 
- * 3. Make it so the effect won't run if the time is already at 0
+ * Make it so clicking the Start button starts the timer instead of it starting on refresh
+ * (Hint: use a new state variable to indicate if the game should be running or not)
  */
 
 function App() {
     const [text, setText] = useState("")
     const [timeRemaining, setTimeRemaining] = useState(5)
-    
+    const [isRunning, setIsRunning] = useState(false)
+
     function handleChange(e) {
         const {value} = e.target
         setText(value)
     }
     
-    function calculateWordCount(text) {
+    /*function calculateWordCount(text) {
         const wordsArr = text.trim().split(" ")
         return wordsArr.filter(word => word !== "").length
-    }
+    }*/
     
+    function handleStart() {
+        setIsRunning(prev => !prev)
+    }
+
     useEffect(() => {
-        if(timeRemaining > 0) {
+        if(isRunning && timeRemaining > 0) {
             setTimeout(() => {
                 setTimeRemaining(time => time - 1)
             }, 1000)
         }
-    }, [timeRemaining])
+        else if (timeRemaining == 0) {
+//            setTimeRemaining(5)
+            setIsRunning(false)
+        }
+    }, [isRunning, timeRemaining])
     
     return (
         <div>
@@ -47,10 +46,10 @@ function App() {
                 value={text}
             />
             <h4>Time remaining: {timeRemaining}</h4>
-            <button onClick={() => console.log(calculateWordCount(text))}>Start</button>
+            <button onClick={handleStart}>Start</button>
             <h1>Word count: ???</h1>
         </div>
     )
 }
-
+/* onClick={() => console.log(calculateWordCount(text))}*/
 export default App
