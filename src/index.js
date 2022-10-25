@@ -8,3 +8,4 @@ root.render(
     <App />
 );
 
+//cd c:/GIT/react_advance/speed_typing_game

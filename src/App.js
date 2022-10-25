@@ -1,42 +1,55 @@
 import React, {useState, useEffect} from "react"
-/* cd c:/GIT/react_advance/speed_typing_game
+
 /**
  * Challenge:
  * 
- * Make it so clicking the Start button starts the timer instead of it starting on refresh
- * (Hint: use a new state variable to indicate if the game should be running or not)
+ * When the timer reaches 0, count the number of words the user typed in 
+ * and display it in the "Word count" section
+ * 
+ * After the game ends, make it so the user can click the Start button again
+ * to play a second time
  */
 
 function App() {
+    const STARTING_TIME = 5
+    
     const [text, setText] = useState("")
-    const [timeRemaining, setTimeRemaining] = useState(5)
-    const [isRunning, setIsRunning] = useState(false)
-
+    const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME)
+    const [isTimeRunning, setIsTimeRunning] = useState(false)
+    const [wordCount, setWordCount] = useState(0)
+    
     function handleChange(e) {
         const {value} = e.target
         setText(value)
     }
     
-    /*function calculateWordCount(text) {
+    function calculateWordCount(text) {
         const wordsArr = text.trim().split(" ")
         return wordsArr.filter(word => word !== "").length
-    }*/
-    
-    function handleStart() {
-        setIsRunning(prev => !prev)
     }
-
+    
+    function startGame() {
+        setIsTimeRunning(true)
+        setTimeRemaining(STARTING_TIME)
+        setText("")
+    }
+    
+    function endGame() {
+        setIsTimeRunning(false)
+        setWordCount(calculateWordCount(text))
+    }
+    
+    // https://www.google.com/search?q=Disable+button+in+react
+    
     useEffect(() => {
-        if(isRunning && timeRemaining > 0) {
+        if(isTimeRunning && timeRemaining > 0) {
             setTimeout(() => {
                 setTimeRemaining(time => time - 1)
             }, 1000)
+        } else if(timeRemaining === 0) {
+            endGame()
         }
-        else if (timeRemaining == 0) {
-//            setTimeRemaining(5)
-            setIsRunning(false)
-        }
-    }, [isRunning, timeRemaining])
+    }, [timeRemaining, isTimeRunning])
     
     return (
         <div>
@@ -44,12 +57,18 @@ function App() {
             <textarea
                 onChange={handleChange}
                 value={text}
+                disabled={!isTimeRunning}
             />
             <h4>Time remaining: {timeRemaining}</h4>
-            <button onClick={handleStart}>Start</button>
-            <h1>Word count: ???</h1>
+            <button 
+                onClick={startGame}
+                disabled={isTimeRunning}
+            >
+                Start
+            </button>
+            <h1>Word count: {wordCount}</h1>
         </div>
     )
 }
-/* onClick={() => console.log(calculateWordCount(text))}*/
+
 export default App
