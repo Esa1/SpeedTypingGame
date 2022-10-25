@@ -9,10 +9,20 @@ import './App.css';
  */
 
 function App() {
+    const [input, setInput] = React.useState("")
+    console.log(input)
+    
+    function handleInput(e) {
+        setInput(e.target.value)
+    }
+
     return (
         <div>
             <h1>How fast do you type?</h1>
-            <textarea />
+            <textarea 
+              value={input}
+              onChange={handleInput}
+            />
             <h4>Time reminaing: ???</h4>
             <button>Start</button>
             <h1>Word count: ???</h1>
